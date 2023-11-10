@@ -58,6 +58,7 @@ public class UserController {
         wrapper.eq(User::getName, user.getName());
         return userService.list(wrapper);
     }
+//    分页查询，使用mybatis-plus的分页插件
     @PostMapping("listPage")
     public List<User> listPage(@RequestBody QueryPageParam queryPageParam){
         System.out.println(queryPageParam);
@@ -70,6 +71,26 @@ public class UserController {
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(User::getName, param.get("name"));
         IPage result = userService.page(page, wrapper);
+        System.out.println("total == " + result.getTotal());
+        return result.getRecords();
+    }
+//    分页查询，使用自定义的分页插件，不需要传入wrapper
+    @PostMapping("listPageC")
+    public List<User> listPageC(@RequestBody QueryPageParam queryPageParam){
+        Page page = new Page(queryPageParam.getPageNum(), queryPageParam.getPageSize());
+        IPage result = userService.pageC(page);
+        System.out.println("total == " + result.getTotal());
+        return result.getRecords();
+    }
+//    分页查询，使用自定义的分页插件，需要传入wrapper
+    @PostMapping("listPageCC")
+    public List<User> listPageCC(@RequestBody QueryPageParam queryPageParam){
+        Page page = new Page(queryPageParam.getPageNum(), queryPageParam.getPageSize());
+        HashMap param = queryPageParam.getParam();
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.like(User::getName, param.get("name"));
+
+        IPage result = userService.pageCC(page, wrapper);
         System.out.println("total == " + result.getTotal());
         return result.getRecords();
     }
