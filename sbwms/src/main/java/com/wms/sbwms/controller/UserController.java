@@ -3,6 +3,7 @@ package com.wms.sbwms.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wms.sbwms.common.QueryPageParam;
 import com.wms.sbwms.common.Result;
@@ -55,8 +56,13 @@ public class UserController {
     @GetMapping("/query")
     public List<User> query(@RequestBody User user){
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        if(StringUtils.isNotBlank(user.getName())){
+            wrapper.like(User::getName, user.getName());
+//            返回模糊查询的结果
+            return userService.list(wrapper);
+        }
 //        wrapper.like(User::getName, user.getName());
-        wrapper.eq(User::getName, user.getName());
+//        wrapper.eq(User::getName, user.getName());
         return userService.list(wrapper);
     }
 //    分页查询，使用mybatis-plus的分页插件
