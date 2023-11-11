@@ -8,9 +8,14 @@ public class Result {
     private String msg; //成功/失败
     private Long total; //总记录数
     private Object data; //数据
+    private String name; //姓名
+    private String password; //密码
 
     public static Result fail(){
         return result(400, "失败", 0L, null);
+    }
+    public static Result fail(String name, String password){
+        return result(400, "缺少用户名或密码", 0L, null);
     }
     public static Result success(){
         return result(200, "成功", 0L, null);

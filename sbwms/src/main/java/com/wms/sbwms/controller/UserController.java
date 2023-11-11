@@ -5,12 +5,14 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.databind.util.JSONWrappedObject;
 import com.wms.sbwms.common.QueryPageParam;
 import com.wms.sbwms.common.Result;
 import com.wms.sbwms.entity.User;
 import com.wms.sbwms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.spring.web.json.Json;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +37,9 @@ public class UserController {
 //    新增
     @PostMapping("/save")
     public Result save(@RequestBody User user){
+        if(StringUtils.isBlank(user.getName())||StringUtils.isBlank(user.getPassword())){
+            return Result.fail(user.getName(),user.getPassword());
+        }
         return userService.save(user)?Result.success(1L,user):Result.fail();
     }
 //    修改
