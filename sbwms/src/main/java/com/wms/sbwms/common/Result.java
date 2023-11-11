@@ -14,6 +14,9 @@ public class Result {
     public static Result fail(){
         return result(400, "失败", 0L, null);
     }
+    public static Result fail(String name){
+        return result(400, "已经存在该用户", 0L, null);
+    }
     public static Result fail(String name, String password){
         return result(400, "缺少用户名或密码", 0L, null);
     }

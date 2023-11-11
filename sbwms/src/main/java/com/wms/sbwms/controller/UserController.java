@@ -40,6 +40,15 @@ public class UserController {
         if(StringUtils.isBlank(user.getName())||StringUtils.isBlank(user.getPassword())){
             return Result.fail(user.getName(),user.getPassword());
         }
+//        确保用户名不能重复
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        if(StringUtils.isNotBlank(user.getName())) {
+            wrapper.eq(User::getName, user.getName());
+            List<User> list = userService.list(wrapper);
+            if (list.size() > 0) {
+                return Result.fail(user.getName());
+            }
+        }
         return userService.save(user)?Result.success(1L,user):Result.fail();
     }
 //    修改
