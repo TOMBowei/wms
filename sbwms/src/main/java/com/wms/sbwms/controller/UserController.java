@@ -34,8 +34,8 @@ public class UserController {
     }
 //    新增
     @PostMapping("/save")
-    public boolean save(@RequestBody User user){
-        return userService.save(user);
+    public Result save(@RequestBody User user){
+        return userService.save(user)?Result.success(1L,user):Result.fail();
     }
 //    修改
     @PostMapping("/update")
@@ -116,5 +116,17 @@ public class UserController {
         IPage result = userService.page(page, wrapper);
         System.out.println("total == " + result.getTotal());
         return Result.success(result.getTotal(),result.getRecords());
+    }
+//    按照性别查询
+    @PostMapping("listPageSex")
+    public List<User> listPageSex(@RequestBody QueryPageParam queryPageParam){
+        HashMap param = queryPageParam.getParam();
+        Page page = new Page(queryPageParam.getPageNum(), queryPageParam.getPageSize());
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        if(StringUtils.isNotBlank(param.get("sex").toString())){
+            wrapper.eq(User::getSex,param.get("sex"));
+        }
+        IPage result = userService.page(page, wrapper);
+        return result.getRecords();
     }
 }
