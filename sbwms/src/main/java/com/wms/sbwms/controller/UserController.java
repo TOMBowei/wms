@@ -4,6 +4,7 @@ package com.wms.sbwms.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wms.sbwms.common.QueryPageParam;
 import com.wms.sbwms.common.Result;
@@ -53,6 +54,14 @@ public class UserController {
     @PostMapping("/update")
     public boolean update(@RequestBody User user){
         return userService.updateById(user);
+    }
+//    登陆
+    @PostMapping("/login")
+    public Result login(@RequestBody User user){
+        List list =  userService.lambdaQuery()
+                .eq(User::getName, user.getName())
+                .eq(User::getPassword, user.getPassword()).list();
+        return list.size()>0 ? Result.success(list.get(0)) : Result.fail();
     }
 //    新增或修改
     @PostMapping("/saveOrUpdate")
