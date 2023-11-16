@@ -8,7 +8,9 @@ import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapp
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wms.sbwms.common.QueryPageParam;
 import com.wms.sbwms.common.Result;
+import com.wms.sbwms.entity.Menu;
 import com.wms.sbwms.entity.User;
+import com.wms.sbwms.service.MenuService;
 import com.wms.sbwms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +31,10 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private MenuService menuService;
+
     @GetMapping("/list")
     public List<User> list(){
         return userService.list();
@@ -61,7 +67,17 @@ public class UserController {
         List list =  userService.lambdaQuery()
                 .eq(User::getName, user.getName())
                 .eq(User::getPassword, user.getPassword()).list();
-        return list.size()>0 ? Result.success((long) list.size(),list.get(0)) : Result.fail();
+
+        if (list.size() > 0) {
+            User user1 = (User)list.get(0);
+            List menuList = menuService.lambdaQuery().eq(Menu::getMenuright,user1.getRoleId()).list();
+            HashMap res = new HashMap();
+            res.put("user",user1);
+            res.put("menu",menuList);
+            return Result.success(res);
+        }
+
+        return Result.fail();
     }
 //    新增或修改
     @PostMapping("/saveOrUpdate")
