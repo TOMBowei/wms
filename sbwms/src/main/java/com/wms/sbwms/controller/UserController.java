@@ -61,7 +61,7 @@ public class UserController {
         List list =  userService.lambdaQuery()
                 .eq(User::getName, user.getName())
                 .eq(User::getPassword, user.getPassword()).list();
-        return list.size()>0 ? Result.success(list.get(0)) : Result.fail();
+        return list.size()>0 ? Result.success((long) list.size(),list.get(0)) : Result.fail();
     }
 //    新增或修改
     @PostMapping("/saveOrUpdate")
