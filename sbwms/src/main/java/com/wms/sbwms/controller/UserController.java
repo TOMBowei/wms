@@ -2,6 +2,7 @@ package com.wms.sbwms.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.Query;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
@@ -165,5 +166,24 @@ public class UserController {
         }
         IPage result = userService.page(page, wrapper);
         return result.getRecords();
+    }
+//    管理员管理功能
+    @PostMapping("admin")
+    public Result adminManage(@RequestBody QueryPageParam queryPageParam){
+        HashMap param = queryPageParam.getParam();
+        String name = param.get("name").toString();
+        String roleId = param.get("roleId").toString();
+        Page<User> page = new Page();
+        page.setCurrent(queryPageParam.getPageNum());
+        page.setSize(queryPageParam.getPageSize());
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        if(StringUtils.isNotBlank(name) && !"null".equals(name)){
+            wrapper.like(User::getName,name);
+        }
+        if(StringUtils.isNotBlank(roleId)){
+            wrapper.eq(User::getRoleId,roleId);
+        }
+        IPage result = userService.page(page, wrapper);
+        return Result.success(result.getTotal(),result.getRecords());
     }
 }
