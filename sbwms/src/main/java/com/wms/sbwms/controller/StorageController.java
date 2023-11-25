@@ -55,4 +55,9 @@ public class StorageController {
         IPage result = storageService.myPage(page, wrapper);
         return Result.success(result.getTotal(),result.getRecords());
     }
+    @GetMapping("/listAll")
+    public Result listAll(){
+        List list = storageService.list();
+        return Result.success(list);
+    }
 }

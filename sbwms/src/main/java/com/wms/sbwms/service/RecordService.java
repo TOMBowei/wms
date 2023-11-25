@@ -3,8 +3,8 @@ package com.wms.sbwms.service;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wms.sbwms.entity.Goods;
+import com.wms.sbwms.entity.Record;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.wms.sbwms.entity.Goodstype;
 
 /**
  * <p>
@@ -12,10 +12,10 @@ import com.wms.sbwms.entity.Goodstype;
  * </p>
  *
  * @author wms
- * @since 2023-11-22
+ * @since 2023-11-25
  */
-public interface GoodsService extends IService<Goods> {
+public interface RecordService extends IService<Record> {
 
-    IPage myList(IPage<Goods> page, Wrapper<Goods> wrapper);
+    IPage myList(IPage<Record> page, Wrapper<Record> wrapper);
 
 }

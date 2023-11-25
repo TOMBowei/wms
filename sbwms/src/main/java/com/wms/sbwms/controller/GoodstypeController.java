@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * <p>
@@ -51,5 +52,10 @@ public class GoodstypeController {
         wrapper.like(Goodstype::getName, param.get("name"));
         IPage result = goodstypeService.myList(page, wrapper);
         return Result.success(result.getTotal(),result.getRecords());
+    }
+    @GetMapping("/listAll")
+    public Result listAll(){
+        List list = goodstypeService.list();
+        return Result.success(list);
     }
 }

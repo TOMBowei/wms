@@ -17,4 +17,8 @@
         id, name, storage, goodsType, count, remark
     </sql>
 
+    <select id="myList" resultType="com.wms.sbwms.entity.Goods">
+        select * from goods ${ew.customSqlSegment}
+    </select>
+
 </mapper>
